@@ -1,7 +1,7 @@
 """Define all classes that relate to the Module class."""
 import math
 
-from torch import FloatTensor
+from torch import empty
 
 
 class Module(object):
@@ -49,18 +49,18 @@ class Linear(Module):
         self.dim_out = dim_out
 
         # initialize bias
-        self.bias = FloatTensor(dim_out).normal_()
-        self.grad_bias = FloatTensor(dim_out).zero_()
+        self.bias = empty(dim_out).normal_()
+        self.grad_bias = empty(dim_out).zero_()
 
         # initialize w
-        self.weights = FloatTensor(dim_in, dim_out).normal_()
+        self.weights = empty(dim_in, dim_out).normal_()
         if w_init.lower() == "he":
             self.weights.normal_().mul_(math.sqrt(2/(self.dim_in)))
         elif w_init.lower() == 'xavier':
             self.weights.normal_().mul_(
                 math.sqrt(2/(self.dim_in + self.dim_out)))
 
-        self.grad_weight = FloatTensor(dim_in, dim_out).zero_()
+        self.grad_weight = empty(dim_in, dim_out).zero_()
 
     def forward(self, data):
         """Do a forward pass."""
@@ -120,6 +120,7 @@ class Tanh(Module):
 
     def __init__(self):
         """Initialize the module."""
+        super().__init__()
         self.name = "Tanh"
         self.type = "Activation"
         self.dim_data = None
@@ -144,6 +145,7 @@ class Sigmoid(Module):
 
     def __init__(self):
         """Initialize metadata."""
+        super().__init__()
         self.name = "Sigmoid"
         self.type = "Activation"
         self.output = None

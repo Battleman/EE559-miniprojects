@@ -1,16 +1,15 @@
 """Define useful functions."""
 import math
 
-import matplotlib.pyplot as plt
-import torch
-from torch import Tensor
+from torch import Tensor, eye
+from torch import max as tmax
 
 from optim import SGD
 
 
 def one_hot_embedding(labels):
     """Do one-hot encoding of labels."""
-    return torch.eye(2)[labels]
+    return eye(2)[labels]
 
 
 def generate_disc_set(size):
@@ -33,17 +32,21 @@ def generate_disc_set(size):
 def plot_preds(data, labels, axe=None, size=10):
     """Scatter the points in an ax with a color."""
     if axe is None:
+        import matplotlib.pyplot as plt
         fig = plt.figure(figsize=(5, 5))
         axe = fig.subplots(1, 1)
-    colors = ["blue" if lab == 0 else "red" for lab in labels]
-    axe.scatter(data[:, 0], data[:, 1], c=colors, s=size)
+    subset_0 = [data[x].tolist() for x in range(len(labels)) if labels[x] == 0]
+    subset_1 = [data[x].tolist() for x in range(len(labels)) if labels[x] == 1]
+    # print(subset_0)
+    axe.scatter([d[0] for d in subset_0], [d[1] for d in subset_0], c="blue", s=size, label="0")
+    axe.scatter([d[0] for d in subset_1], [d[1] for d in subset_1], c="red" , s=size, label="1")
 
 
 def compute_nb_errors(model, data, targets):
     """Count the total of misclassified points."""
     nb_errors = 0
     output = model(data)
-    predictions = torch.max(output.data, 1).indices
+    predictions = tmax(output.data, 1).indices
 
     for pred, targ in zip(predictions, targets):
         assert pred in [0, 1] and targ in [0, 1]
