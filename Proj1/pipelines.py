@@ -18,14 +18,14 @@ def compute_nb_errors(model, data_input, data_target, mini_batch_size):
         positive integer, the absolute count of misclassified elements.
     """
     nb_data_errors = 0
-    for b in range(0, data_input.size(0), mini_batch_size):
+    for batch in range(0, data_input.size(0), mini_batch_size):
         # Prediction
-        output_single, _ = model(data_input.narrow(0, b, mini_batch_size))
+        output_single, _ = model(data_input.narrow(0, batch, mini_batch_size))
         _, predicted_classes = torch.max(F.softmax(output_single.data, 0), 1)
 
         # Compare and count error
         for k in range(int(mini_batch_size/2)):
-            if data_target.data[int(b/2) + k] != predicted_classes[k]:
+            if data_target.data[int(batch/2) + k] != predicted_classes[k]:
                 nb_data_errors = nb_data_errors + 1
     return nb_data_errors
 

@@ -1,4 +1,6 @@
 """Define the models to be trained."""
+from abc import abstractmethod
+
 from torch import nn, optim
 from torch.nn import functional as F
 
@@ -10,6 +12,14 @@ class BaseNetClass(nn.Module):
         """Set common metadata for all Networks models."""
         super().__init__()
         self.auxiliary = auxiliary
+
+    @abstractmethod
+    def forward(self, *data):
+        r"""Define the computation performed at every call.
+
+        Should be overridden by all subclasses.
+        """
+        raise NotImplementedError
 
     def train_model(self, train_data, train_target, train_classes=None,
                     nb_epochs=25, lambda_l2=0.1, batch_size=100, lr=1e-3*0.5):
