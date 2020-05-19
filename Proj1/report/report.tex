@@ -14,7 +14,7 @@
 \maketitle
 
 \begin{abstract}
-Some content
+Building a deep learner that performs a specific task is not always easy. To help us, we can use some design patterns. In this paper we will look how the use of weight sharing and auxiliary loss impact the performance of deep learners. We will see that both of them help immensely the classification task at hand, with weight sharing allowing for a faster train, while auxiliary loss gives better accuracy overall.
 \end{abstract}
 
 \section{Introduction}
@@ -30,8 +30,6 @@ In this experiment, we will try and predict which of two hand-written digits is 
 Each image is a $14\times14$ grayscale image. So each item is a $2\times14\times14$ tensor.
 
 
-\section{Models and methods}
-As we wish to investigate the effect of weight sharing and auxiliary loss, it makes sense to create 4 models, combining these criterions.
 \begin{table}[h]
     \begin{tabular}{l|c|c}
         & No auxiliary loss & Auxiliary loss\\
@@ -43,7 +41,9 @@ As we wish to investigate the effect of weight sharing and auxiliary loss, it ma
     \label{tab:names_models}
     \caption{Names of models considered}
 \end{table}
-As you can see, we really only have two models (\textit{Baseline} and \textit{CNN}). Both of them always output a binary classification (our main goal), and a 10-classification (the digits of the numbers). But if we don't wish to use them, we simply discard the latter.
+\section{Models and methods}
+As we wish to investigate the effect of weight sharing and auxiliary loss, it makes sense to create 4 models, combining these criterions.
+As you can see in Table \ref{tab:names_models}, we really only have two models (\textit{Baseline} and \textit{CNN}). Both of them always output a binary classification (our main goal), and a 10-classification (the digits of the numbers). But if we don't wish to use them, we simply discard the latter.
 
 Furthermore, we also use l2-regularization to help overfitting and reduce the amplitude of the weights.
 
@@ -174,6 +174,8 @@ To summarize the above, the lessons to take home are that:
     \item Use all the data at your disposal. There is no point in discarding some of it. Even if it's not the main label we are trying to classify, it's still better to use it for auxiliary loss.
 \end{itemize}
 There is still work left to obtain a more precise idea. First of all, we could compare more networks, with less differences between them. Also, we could compare more architectures of weight sharing, other than CNN. Siamese nets, mentioned earlier, could be an interesting track. Finally, some more work could be done on hyperparameters to obtain ``the best'' of each network, to have a more sensible comparison.
+
+
 \bibliographystyle{IEEEtran}
 \bibliography{dl_report}
 
